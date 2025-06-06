@@ -7,11 +7,14 @@ try:
 except ImportError:
     Document = None
 
+
 def count_words_in_text(text: str) -> int:
     return len(text.split())
 
+
 def count_txt_md(path: Path) -> int:
     return count_words_in_text(path.read_text(encoding="utf-8"))
+
 
 def count_docx(path: Path) -> int:
     if not Document:
@@ -20,8 +23,11 @@ def count_docx(path: Path) -> int:
     full_text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
     return count_words_in_text(full_text)
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Count words in a .txt, .md, or .docx file")
+    parser = argparse.ArgumentParser(
+        description="Count words in a .txt, .md, or .docx file"
+    )
     parser.add_argument("file", type=Path, help="Path to input document")
     args = parser.parse_args()
 
@@ -36,10 +42,14 @@ def main():
     elif suffix == ".docx":
         total = count_docx(path)
     else:
-        print("Unsupported file type. Only .txt, .md, and .docx are supported.", file=sys.stderr)
+        print(
+            "Unsupported file type. Only .txt, .md, and .docx are supported.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     print(f"Word count for '{path.name}': {total}")
+
 
 if __name__ == "__main__":
     main()
